@@ -1,0 +1,31 @@
+//Floor and Cieling functions in a sorted array with the help of binary search
+
+
+
+
+public class floorAndCiel {
+    public static void main(String[] args) {
+        int arr[] = {10,20,30,40,50,60,80};
+        int n = arr.length;
+        int floor = -1;
+        int ciel = -1;
+        int low = 0;
+        int high = n-1;
+        int target = 25;
+        while(low<=high){
+            int mid = low+(high-low)/2;
+            if(arr[mid]==target){
+                ciel = floor = target;
+                break;
+            }
+            else if(arr[mid]<target){
+                low = mid+1;
+                ciel = arr[mid];
+            }else{
+                high = mid-1;
+                floor = arr[mid];
+            }
+        }
+        System.out.println(ciel+"   "+floor);
+    }
+}
