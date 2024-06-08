@@ -1,0 +1,39 @@
+Geeks For Geeks Question 2 - Aggressive Cows
+
+
+
+class Solution {
+    public static int solve(int n, int cow, int[] arr) {
+        Arrays.sort(arr);
+        int ans = 1;
+        int low = 1;
+        int high = arr[n-1]-arr[0];
+        while(low<=high){
+            int mid = low+ (high-low)/2;
+            if(isPossible(arr,cow,mid)){
+                ans = mid;
+                low = mid+1;
+            }
+            else{
+                high = mid-1;
+            }
+        }
+        return ans;
+    }
+    
+    static boolean isPossible(int[] arr, int cow, int mid){
+        int cowPlaced = 1;
+        int pos = arr[0];
+        for(int i = 1;i<arr.length;i++){
+            if((arr[i]-pos) >= mid){
+                cowPlaced++;
+                pos = arr[i];
+            }
+            
+            if(cowPlaced>=cow){
+                return true;
+            }
+        }
+        return false;
+    }
+}
