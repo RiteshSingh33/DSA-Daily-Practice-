@@ -1,0 +1,30 @@
+Leet Code Question 4 - Search a 2D Matrix
+Time complexity - O(log(n*m))
+
+class Solution {
+    public boolean searchMatrix(int[][] mat, int target) {
+        int row = mat.length;
+        int col = mat[0].length;
+        
+        int tindex = row*col;
+        int left = 0;
+        int right = tindex-1;
+        while(left<=right){
+            int mid = (left+right)/2;
+            int r = mid/col;
+            int c = mid%col;
+            if(mat[r][c]==target){
+                return true;
+            }
+            else if(mat[r][c]<target){
+                left = mid+1;
+            }
+            else{
+                right = mid-1;
+            }
+        }
+        return false;
+
+    }
+    
+}
