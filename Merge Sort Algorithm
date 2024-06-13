@@ -1,0 +1,49 @@
+public class mergeSort {
+    public static void main(String[] args) {
+        int arr[] = {50,8,52,15,2,1,11};
+        int left = 0, right = arr.length-1;
+        mergesort(arr,left,right);
+
+        for(int i = 0;i<arr.length;i++){
+            System.out.print(arr[i]+" ");
+        }
+    }
+
+    public static void mergesort(int[] arr, int left, int right){
+        if(left<right){
+            int mid = left+(right-left)/2;
+            mergesort(arr,left,mid);
+            mergesort(arr, mid+1, right);
+            merge(arr,left,mid,right);
+        }
+    }
+
+    public static void merge(int[] arr,int left,int mid,int right){
+        int n1 = mid-left+1, n2 = right-mid;
+        int a[] = new int[n1];
+        int b[] = new int[n2];
+        for(int i = 0;i<n1;i++){
+            a[i] = arr[i+left];
+        }
+        for(int j = 0;j<n2;j++){
+            b[j] = arr[mid+j+1];
+        }
+
+        // Sort the two arrays and merge them
+        int i = 0, j = 0, k = left;
+        while(i<n1 && j<n2){
+            if(a[i]<b[j]){
+                arr[k++] = a[i++];
+            }else{
+                arr[k++] = b[j++];
+            }
+        }
+        while(i<n1){
+            arr[k++] = a[i++];
+        }
+        while(j<n2){
+            arr[k++] = b[j++];
+        }
+
+    }
+}
