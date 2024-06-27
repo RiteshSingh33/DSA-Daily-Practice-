@@ -1,0 +1,79 @@
+LeetCode Question 62 - Sort Linked List
+
+Description : Given the head of a linked list, return the list after sorting it in ascending order.
+
+ 
+
+Example 1:
+
+
+Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+Example 2:
+
+
+Input: head = [-1,5,3,4,0]
+Output: [-1,0,3,4,5]
+Example 3:
+
+Input: head = []
+Output: []
+
+Solution :
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next == null) return head;
+
+        ListNode left = head;
+        ListNode right = getRight(head);
+        ListNode temp = right.next;
+        right.next = null;
+        right = temp;
+
+        left = sortList(left);
+        right = sortList(right);
+        return merge(left,right);
+    }
+
+    public ListNode getRight(ListNode head){
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next; 
+        }
+        return slow;
+    }
+
+    public ListNode merge(ListNode left, ListNode right){
+        ListNode tail = new ListNode(0);
+        ListNode curr = tail;
+        while(left!=null && right!=null){
+            if(left.val<right.val){
+                curr.next = left;
+                left = left.next;
+            }else{
+                curr.next = right;
+                right = right.next;
+            }
+            curr = curr.next;
+        }
+        if(left!=null){
+            curr.next = left;
+        }else if(right!=null){
+            curr.next = right;
+        }
+
+        return tail.next;
+    }
+}
