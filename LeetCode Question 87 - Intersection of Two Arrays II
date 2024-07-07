@@ -1,0 +1,59 @@
+LeetCode Question 87 - Intersection of Two Arrays II
+
+Description : Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
+
+ 
+
+Example 1:
+
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+Example 2:
+
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+Explanation: [9,4] is also accepted.
+
+Solution : 
+class Solution {
+    public int[] intersect(int[] arr1, int[] arr2) {
+        Map<Integer,Integer> map = new HashMap<>();
+        List<Integer> list = new ArrayList<Integer>();
+        if(arr1.length>arr2.length){
+            putIntoMap(arr1,map);
+            newArr(arr2,map,list);
+        } 
+        else {
+            putIntoMap(arr2,map);
+            newArr(arr1,map,list);
+        }
+        int[] arr = new int[list.size()];
+        int j = 0;
+        for(int i : list){
+            arr[j++] = i;
+        }
+        return arr;
+    }
+
+    public void putIntoMap(int[] arr,Map<Integer,Integer> map){
+        for(int i : arr){
+            if(map.containsKey(i)){
+                map.put(i,map.get(i)+1);
+            }else{
+                map.put(i,1);
+            }
+        }
+    }
+
+    public void newArr(int[] arr, Map<Integer,Integer> map, List<Integer> list){
+        for(int i: arr){
+            if(map.containsKey(i)){
+                list.add(i);
+                if(map.get(i)==1) map.remove(i);
+                else {
+                    map.put(i,map.get(i)-1);
+                }
+            }
+        }
+    }
+}
