@@ -1,0 +1,73 @@
+LeetCode Question 97 - Find the Minimum and Maximum Number of Nodes Between Critical Points
+
+Description : A critical point in a linked list is defined as either a local maxima or a local minima.
+
+A node is a local maxima if the current node has a value strictly greater than the previous node and the next node.
+
+A node is a local minima if the current node has a value strictly smaller than the previous node and the next node.
+
+Note that a node can only be a local maxima/minima if there exists both a previous node and a next node.
+
+Given a linked list head, return an array of length 2 containing [minDistance, maxDistance] where minDistance is the minimum distance between any two distinct critical points and maxDistance is the maximum distance between any two distinct critical points. If there are fewer than two critical points, return [-1, -1].
+
+ 
+
+Example 1:
+
+
+Input: head = [3,1]
+Output: [-1,-1]
+Explanation: There are no critical points in [3,1].
+Example 2:
+
+
+Input: head = [5,3,1,2,5,1,2]
+Output: [1,3]
+Explanation: There are three critical points:
+- [5,3,1,2,5,1,2]: The third node is a local minima because 1 is less than 3 and 2.
+- [5,3,1,2,5,1,2]: The fifth node is a local maxima because 5 is greater than 2 and 1.
+- [5,3,1,2,5,1,2]: The sixth node is a local minima because 1 is less than 5 and 2.
+The minimum distance is between the fifth and the sixth node. minDistance = 6 - 5 = 1.
+The maximum distance is between the third and the sixth node. maxDistance = 6 - 3 = 3.
+
+Solution : 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[] nodesBetweenCriticalPoints(ListNode head) {
+        List<Integer> list = new ArrayList<>();
+        int[] arr = {-1,-1};
+        if(head==null||head.next==null||head.next.next==null) return arr;
+
+        ListNode prev = head;
+        ListNode curr = head.next;
+        int count = 1;
+        while(curr.next!=null){
+            if(curr.val>prev.val && curr.val>curr.next.val) list.add(count);
+            if(curr.val<prev.val && curr.val<curr.next.val) list.add(count);
+            prev = curr;
+            curr = curr.next;
+            count++;
+        }
+        System.out.println(list);
+        if(list.size()<=1) return arr;
+        int n = list.size();
+        int min = Integer.MAX_VALUE,max = list.get(n-1) - list.get(0);
+        for(int i = 1;i<n;i++){
+            int diff = Math.abs(list.get(i) - list.get(i - 1));
+            max = Math.max(max, diff);
+            min = Math.min(min, diff);
+        }
+        arr[0] = min;
+        arr[1] = max;
+        return arr;
+    }
+}
