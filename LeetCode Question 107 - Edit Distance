@@ -1,0 +1,57 @@
+LeetCode Question 107 - Edit Distance
+
+Description : Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+
+You have the following three operations permitted on a word:
+
+Insert a character
+Delete a character
+Replace a character
+ 
+
+Example 1:
+
+Input: word1 = "horse", word2 = "ros"
+Output: 3
+Explanation: 
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+Example 2:
+
+Input: word1 = "intention", word2 = "execution"
+Output: 5
+Explanation: 
+intention -> inention (remove 't')
+inention -> enention (replace 'i' with 'e')
+enention -> exention (replace 'n' with 'x')
+exention -> exection (replace 'n' with 'c')
+exection -> execution (insert 'u')
+
+Solution : 
+class Solution {
+    public int minDistance(String a, String b) {
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int[][] dp = new int[i+1][j+1];
+        for(int[] arr : dp){
+            Arrays.fill(arr,-1);
+        }
+        return minD(i,j,a,b,dp);
+    }
+
+    public int minD(int i, int j, String a, String b, int[][] dp){
+        if(i<0) return j+1;
+        if(j<0) return i+1;
+        if(dp[i][j]!=-1) return dp[i][j];
+
+        if(a.charAt(i)==b.charAt(j)) return dp[i][j] = 0 + minD(i-1,j-1,a,b,dp);
+        else{
+            int insert = 1+minD(i,j-1,a,b,dp);
+            int delete = 1+minD(i-1,j,a,b,dp);
+            int replace = 1+minD(i-1,j-1,a,b,dp);
+
+            return dp[i][j] = Math.min(insert,Math.min(delete,replace));
+        }
+    }
+}
