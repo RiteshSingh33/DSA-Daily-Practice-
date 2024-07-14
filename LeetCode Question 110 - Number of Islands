@@ -1,0 +1,99 @@
+LeetCode Question 110 - Number of Islands
+
+Description : Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+ 
+
+Example 1:
+
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+Example 2:
+
+Input: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+Output: 3
+
+Solution : 
+class Pair{
+    int first;
+    int second;
+    Pair(int first, int second){
+        this.first = first;
+        this.second = second;
+    }
+}
+class Solution {
+    public void bfs(int row,int col,int[][] vis,char[][] arr){
+        vis[row][col] = 1;
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(row,col));
+        int n = arr.length;
+        int m = arr[0].length;
+        
+        while(!q.isEmpty()){
+            Pair p = q.poll();
+            int r = p.first;
+            int c = p.second;
+
+            // Top
+            int nr = r-1;
+            int nc = c;
+            if(nr>=0 && nr<n && nc>=0 && nc<m && arr[nr][nc] == '1' && vis[nr][nc] == 0){
+                vis[nr][nc] = 1;
+                q.add(new Pair(nr,nc));
+            }
+
+            // Left
+            nr = r;
+            nc = c-1;
+            if(nr>=0 && nr<n && nc>=0 && nc<m && arr[nr][nc] == '1' && vis[nr][nc] == 0){
+                vis[nr][nc] = 1;
+                q.add(new Pair(nr,nc));
+            }
+
+            // Bottom 
+            nr = r+1;
+            nc = c;
+            if(nr>=0 && nr<n && nc>=0 && nc<m && arr[nr][nc] == '1' && vis[nr][nc] == 0){
+                vis[nr][nc] = 1;
+                q.add(new Pair(nr,nc));
+            }
+
+            // Right
+            nr = r;
+            nc = c+1;
+            if(nr>=0 && nr<n && nc>=0 && nc<m && arr[nr][nc] == '1' && vis[nr][nc] == 0){
+                vis[nr][nc] = 1;
+                q.add(new Pair(nr,nc));
+            }
+        }
+    }
+    public int numIslands(char[][] arr) {
+        int n = arr.length;
+        int m = arr[0].length;
+
+        int vis[][] = new int[n][m];
+        int count = 0;
+        for(int row = 0;row<n;row++){
+            for(int col = 0;col<m;col++){
+                if(vis[row][col] == 0 && arr[row][col] == '1'){
+                    count++;
+                    bfs(row,col,vis,arr);
+                }
+            }
+        }
+        return count;
+    }
+}
