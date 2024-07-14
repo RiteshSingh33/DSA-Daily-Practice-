@@ -1,0 +1,83 @@
+LeetCode Question 112 - Rotting Oranges
+
+Description : You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+ 
+
+Example 1:
+
+
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+Example 2:
+
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+Example 3:
+
+Input: grid = [[0,2]]
+Output: 0
+Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
+
+Solution :
+class Pair{
+    int r;
+    int c;
+    Pair(int r, int c){
+        this.r = r;
+        this.c = c;
+    }
+}
+class Solution {
+    public int orangesRotting(int[][] arr) {
+        int m = arr.length;
+        int n = arr[0].length;
+        int fOrange = 0;
+        int time = 0;
+        Queue<Pair> q = new LinkedList<>();
+
+        for(int i = 0;i<arr.length;i++){
+            for(int j = 0;j<arr[i].length;j++){
+                if(arr[i][j]==2){
+                    q.offer(new Pair(i,j));
+                }
+                else if(arr[i][j]==1){
+                    fOrange++;
+                }
+            }
+        }
+        if(fOrange==0) return time;
+
+        int[] rDir = {0,1,0,-1};
+        int[] cDir = {1,0,-1,0};
+
+        time = -1; //First time it will be at -1 time so that when it go to queue it will be at 0 time.
+        while(!q.isEmpty()){
+            int s = q.size();
+            time++;
+            for(int i = 0;i<s;i++){
+                Pair p = q.poll();
+                for(int j = 0;j<4;j++){
+                    int nr = p.r + rDir[j];
+                    int nc = p.c + cDir[j];
+
+                    if(nr>=0 && nc>=0 && nr<m && nc<n && arr[nr][nc]==1){
+                        arr[nr][nc]=2;
+                        fOrange--;
+                        q.add(new Pair(nr,nc));
+                    }
+                }
+            }
+        }
+        if(fOrange!=0) return -1;
+        return time;
+    }
+}
