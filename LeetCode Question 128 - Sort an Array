@@ -1,0 +1,59 @@
+LeetCode Question 128 - Sort an Array
+
+Description : Given an array of integers nums, sort the array in ascending order and return it.
+
+You must solve the problem without using any built-in functions in O(nlog(n)) time complexity and with the smallest space complexity possible.
+
+ 
+
+Example 1:
+
+Input: nums = [5,2,3,1]
+Output: [1,2,3,5]
+Explanation: After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).
+Example 2:
+
+Input: nums = [5,1,1,2,0,0]
+Output: [0,0,1,1,2,5]
+Explanation: Note that the values of nums are not necessairly unique.
+
+
+Solution : 
+class Solution {
+    public int[] sortArray(int[] arr) {
+        
+        int left = 0, right = arr.length - 1;
+        divide(arr,left,right);
+        return arr;
+    }
+
+    public void divide(int[] arr, int left, int right){
+        if(left<right){
+            int mid = left+(right-left)/2;
+            divide(arr,left,mid);
+            divide(arr,mid+1,right);
+            merge(arr,left,mid,right);
+        }
+    }
+    public void merge(int[] arr, int left, int mid, int right){
+        int n1 = mid-left+1, n2 = right-mid;
+        int a[] = new int[n1];
+        int b[] = new int[n2];
+        for(int i = 0;i<n1;i++){
+            a[i] = arr[i+left];
+        }
+        for(int j = 0;j<n2;j++){
+            b[j] = arr[mid+j+1];
+        }
+        int i = 0,j =0, k = left;
+        while(i<n1 && j<n2){
+            if(a[i]<b[j]){
+                arr[k++] = a[i++];
+            }else{
+                arr[k++] = b[j++];
+            }
+        }
+        while(i<n1) arr[k++] = a[i++];
+        while(j<n2) arr[k++] = b[j++];
+    }
+}
