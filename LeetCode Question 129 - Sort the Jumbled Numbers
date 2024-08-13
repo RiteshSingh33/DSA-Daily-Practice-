@@ -1,4 +1,4 @@
-LeetCode Question 128 - Sort the Jumbled Numbers
+LeetCode Question 129 - Sort the Jumbled Numbers
 
 Description : You are given a 0-indexed integer array mapping which represents the mapping rule of a shuffled decimal system. mapping[i] = j means digit i should be mapped to digit j in this system.
 
