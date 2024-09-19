@@ -1,0 +1,55 @@
+LeetCode Question 166 - Diagonal Traverse
+
+Description : Given an m x n matrix mat, return an array of all the elements of the array in a diagonal order.
+
+Example 1:
+
+Input: mat = [[1,2,3],[4,5,6],[7,8,9]]
+Output: [1,2,4,7,5,3,6,8,9]
+Example 2:
+
+Input: mat = [[1,2],[3,4]]
+Output: [1,2,3,4]
+
+Solution :
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        if (mat.length == 0 || mat[0].length == 0) return new int[0];
+        int sRow = 0,sCol = 0;
+        int m = mat.length,n = mat[0].length;
+        int count = 1,i = 0;
+        int[] arr = new int[m*n];
+        while(i<(m*n)){
+            arr[i++] = mat[sRow][sCol];
+            if(count%2!=0){
+                
+                if(sCol==n-1){
+                    sRow++;
+                    count++;
+                } 
+                else if(sRow==0){
+                    sCol++;
+                    count++;
+                } 
+                else{
+                    sRow--;
+                    sCol++;
+                }
+            }else{
+                if(sRow==m-1){
+                    sCol++;
+                    count++;
+                }
+                else if(sCol==0) {
+                    sRow++;
+                    count++;
+                }
+                else{
+                    sRow++;
+                    sCol--;
+                }
+            }
+        }
+        return arr;
+    }
+}
