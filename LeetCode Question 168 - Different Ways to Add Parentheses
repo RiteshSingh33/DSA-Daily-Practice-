@@ -1,0 +1,61 @@
+LeetCode Question 168 - Different Ways to Add Parentheses
+
+Description : Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.
+
+The test cases are generated such that the output values fit in a 32-bit integer and the number of different results does not exceed 104.
+
+ 
+
+Example 1:
+
+Input: expression = "2-1-1"
+Output: [0,2]
+Explanation:
+((2-1)-1) = 0 
+(2-(1-1)) = 2
+Example 2:
+
+Input: expression = "2*3-4*5"
+Output: [-34,-14,-10,-10,10]
+Explanation:
+(2*(3-(4*5))) = -34 
+((2*3)-(4*5)) = -14 
+((2*(3-4))*5) = -10 
+(2*((3-4)*5)) = -10 
+(((2*3)-4)*5) = 10
+
+Solution : 
+class Solution {
+    HashMap<String, List<Integer>> map = new HashMap<>();
+    public List<Integer> diffWaysToCompute(String s) {
+        return solve(s);
+    }
+
+    public List<Integer> solve(String s){
+        if(map.containsKey(s)) return map.get(s);
+
+        List<Integer> res = new ArrayList<>();
+        for(int i = 0;i<s.length();i++){
+            char c = s.charAt(i);
+            if(c=='-'||c=='+'||c=='*'){
+                String a = s.substring(0,i);
+                String b = s.substring(i+1);
+
+                List<Integer> al = solve(a);
+                List<Integer> br = solve(b);
+
+                for(int x :al){
+                    for(int y : br){
+                        if(c=='-') res.add(x-y);
+                        else if(c=='+') res.add(x+y);
+                        else if(c=='*') res.add(x*y);
+                    }
+                }
+
+            }
+        }
+        if(res.size()==0) res.add(Integer.valueOf(s));
+        map.put(s,res);
+        return res;
+    }
+}
